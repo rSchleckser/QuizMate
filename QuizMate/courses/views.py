@@ -57,3 +57,12 @@ def instructor_dashboard(request):
         'students': CustomUser.objects.filter(enrollments__course__in=courses)
     }
     return render(request, 'courses/instructor_dashboard.html', context)
+
+def course_list(request):
+    courses = Course.objects.all()
+    return render(request, 'courses/course_list.html', {'courses': courses})
+
+def enrolled_courses(request):
+    enrollments = Enrollment.objects.filter(student=request.user)
+    courses = [enrollment.course for enrollment in enrollments]
+    return render(request, 'courses/enrolled_courses.html', {'courses': courses})
