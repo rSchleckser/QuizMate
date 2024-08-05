@@ -1,7 +1,92 @@
 {% extends 'courses/base.html' %}
 
-{% block title %}Home - QuizMate{% endblock %}
+{% block title %}Instructor Dashboard - QuizMate{% endblock %}
 
 {% block content %}
-<h1>Instructor Dashboard</h1>
+<div class="container mt-4">
+  <h1>Instructor Dashboard</h1>
+
+  <!-- Quick Stats -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Courses</h5>
+          <p class="card-text">
+            {{ courses.count }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Students</h5>
+          <p class="card-text">
+            {{ total_students }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Course Management -->
+  <h2>My Courses</h2>
+  <a href="#" class="btn btn-primary mb-3">Add New Course</a>
+  <div class="list-group">
+    <!-- Fake Course Data -->
+    <a href="#" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">Course Name 1</h5>
+      <p class="mb-1">Course Description 1</p>
+      <small>Students Enrolled: 25</small>
+      <div class="btn-group mt-2" role="group">
+        <a href="#" class="btn btn-warning btn-sm">Edit</a>
+        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    </a>
+    <a href="#" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">Course Name 2</h5>
+      <p class="mb-1">Course Description 2</p>
+      <small>Students Enrolled: 18</small>
+      <div class="btn-group mt-2" role="group">
+        <a href="#" class="btn btn-warning btn-sm">Edit</a>
+        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    </a>
+    <a href="#" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">Course Name 3</h5>
+      <p class="mb-1">Course Description 3</p>
+      <small>Students Enrolled: 30</small>
+      <div class="btn-group mt-2" role="group">
+        <a href="#" class="btn btn-warning btn-sm">Edit</a>
+        <a href="#" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    </a>
+  </div>
+
+  <!-- Student List -->
+  <h2 class="mt-4">Student List</h2>
+  <div class="list-group">
+    <!-- Fake Student Data -->
+    <a href="#" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">Student Name 1</h5>
+      <p class="mb-1">student1@example.com</p>
+      <small>Enrolled Courses: 3</small>
+    </a>
+    <a href="#" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">Student Name 2</h5>
+      <p class="mb-1">student2@example.com</p>
+      <small>Enrolled Courses: 2</small>
+    </a>
+    <a href="#" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">Student Name 3</h5>
+      <p class="mb-1">student3@example.com</p>
+      <small>Enrolled Courses: 5</small>
+    </a>
+  </div>
+
+  <!-- Statistics -->
+  <h2 class="mt-4">Course Performance</h2>
+  <p>View detailed analytics on student performance and course effectiveness. [Add charts/graphs here if needed]</p>
+</div>
 {% endblock %}

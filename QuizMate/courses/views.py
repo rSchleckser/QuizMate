@@ -20,7 +20,7 @@ def signup(request):
                 user.is_instructor = True
             user.save()
             login(request, user)
-            return redirect('courses/student_dashboard' if user.is_student else 'courses/instructor_dashboard')
+            return redirect('student_dashboard' if user.is_student else 'instructor_dashboard')
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -49,4 +49,11 @@ def instructor_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_instructor:
         return redirect('login')
     courses = Course.objects.filter(instructor=request.user)
-    return render(request, 'courses/instructor_dashboard.html', {'courses': courses})
+    total_students = CustomUser.objects.filter(enrollments__course__in=courses).distinct().count()
+    
+    context = {
+        'courses': courses,
+        'total_students': total_students,
+        'students': CustomUser.objects.filter(enrollments__course__in=courses)
+    }
+    return render(request, 'courses/instructor_dashboard.html', context)
