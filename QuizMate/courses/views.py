@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
 from .models import CustomUser, Course, Enrollment, Quiz, Question, Submission
 
 
@@ -9,13 +10,19 @@ def home(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user_type = form.cleaned_data['user_type']
+            if user_type == 'student':
+                user.is_student = True
+            elif user_type == 'instructor':
+                user.is_instructor = True
+            user.save()
             login(request, user)
-            return redirect('student_dashboard' if user.is_student else 'instructor_dashboard')
+            return redirect('courses/student_dashboard' if user.is_student else 'courses/instructor_dashboard')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
 def login_view(request):
@@ -30,7 +37,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('courses/home')
+    return redirect('home')
 
 def student_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_student:
