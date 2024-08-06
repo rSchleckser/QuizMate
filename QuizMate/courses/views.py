@@ -43,7 +43,7 @@ def student_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_student:
         return redirect('login')
     courses = Course.objects.all()
-    return render(request, 'courses/student_dashboard.html', {'courses': courses})
+    return render(request, 'courses/student/student_dashboard.html', {'courses': courses})
 
 def instructor_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_instructor:
@@ -57,7 +57,7 @@ def instructor_dashboard(request):
         'students': CustomUser.objects.filter(enrollments__course__in=courses),
         'user_type': 'Instructor'  
     }
-    return render(request, 'courses/instructor_dashboard.html', context)
+    return render(request, 'courses/instructor/instructor_dashboard.html', context)
 
 def course_list(request):
     courses = Course.objects.all()
@@ -66,10 +66,15 @@ def course_list(request):
 def course_detail_student(request, pk):
     course = Course.objects.get(id=pk)
     quizzes = Quiz.objects.filter(course=course)
-    return render(request, 'courses/course_detail_student.html', {'course': course, 'quizzes': quizzes})
+    return render(request, 'courses/student/course_detail_student.html', {'course': course, 'quizzes': quizzes})
+
+def course_detail_instructor(request, pk):
+    course = Course.objects.get(id=pk)
+    students = Enrollment.objects.filter(course=course)
+    return render(request, 'courses/instructor/course_detail_instructor.html', {'course': course, 'students': students})
 
 
 def enrolled_courses(request):
     enrollments = Enrollment.objects.filter(student=request.user)
     courses = [enrollment.course for enrollment in enrollments]
-    return render(request, 'courses/enrolled_courses.html', {'courses': courses})
+    return render(request, 'courses/student/enrolled_courses.html', {'courses': courses})

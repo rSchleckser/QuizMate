@@ -7,12 +7,12 @@
   <h1>All Courses</h1>
   <div class="row">
     {% for course in courses %}
-    <div class="col-md-4">
-      <div class="card mb-4">
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm">
         {% if course.image %}
-        <img src="{{ course.image.url }}" class="card-img-top" alt="Course Image">
+        <img src="{{ course.image.url }}" class="card-img-top img-fluid course-img" alt="{{ course.name }}">
         {% else %}
-        <img src="{% static 'default_course_image.jpg' %}" class="card-img-top" alt="Default Course Image">
+        <img src="https://placehold.co/300" class="card-img-top img-fluid course-img" alt="Default Course Image">
         {% endif %}
         <div class="card-body">
           <h5 class="card-title">
@@ -21,14 +21,18 @@
           <p class="card-text">
             {{ course.description }}
           </p>
-          <p class="card-text"><small class="text-muted">Instructor:
-              {{ course.instructor.username }}</small></p>
+          <p class="card-text">
+            <small class="text-muted">Instructor:
+              {{ course.instructor.username }}</small>
+          </p>
           <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">Enroll Now</a>
         </div>
       </div>
     </div>
     {% empty %}
-    <p>No courses available.</p>
+    <div class="col-12">
+      <p>No courses available.</p>
+    </div>
     {% endfor %}
   </div>
 </div>
