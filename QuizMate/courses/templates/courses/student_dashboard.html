@@ -28,7 +28,8 @@
             {{ course.name }}
           </h5>
           <p class="card-text">
-            {{ course.description }}
+            Instructor:
+            {{ course.instructor }}
           </p>
           <a href="{% url 'course_detail_student' pk=course.pk %}" class="btn btn-primary">View Course</a>
         </div>
