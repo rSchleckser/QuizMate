@@ -1,0 +1,38 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Course Details -
+
+{{ course.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>
+    {{ course.name }}
+  </h1>
+  <p>
+    {{ course.description }}
+  </p>
+
+  <!-- Display course image if available -->
+  {% if course.image %}
+  <img src="{{ course.image.url }}" class="img-fluid" alt="{{ course.name }}">
+  {% else %}
+  <img src="https://via.placeholder.com/300" class="img-fluid" alt="No Image Available">
+  {% endif %}
+
+  <!-- Display quizzes -->
+  <h2 class="mt-4">Quizzes</h2>
+  <div class="list-group">
+    {% for quiz in quizzes %}
+    <a href="{% url 'take_quiz' course.id quiz.id %}" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">
+        {{ quiz.title }}
+      </h5>
+      <p class="mb-1">
+        {{ quiz.description }}
+      </p>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

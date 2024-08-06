@@ -1,10 +1,10 @@
 {% extends 'courses/base.html' %}
 
-{% block title %}All Courses - QuizMate{% endblock %}
+{% block title %}Enrolled Courses - QuizMate{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-  <h1>All Courses</h1>
+  <h1>My Enrolled Courses</h1>
   <div class="row">
     {% for course in courses %}
     <div class="col-md-4">
@@ -23,12 +23,12 @@
           </p>
           <p class="card-text"><small class="text-muted">Instructor:
               {{ course.instructor.username }}</small></p>
-          <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">Enroll Now</a>
+          <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">Continue Course</a>
         </div>
       </div>
     </div>
     {% empty %}
-    <p>No courses available.</p>
+    <p>You are not enrolled in any courses.</p>
     {% endfor %}
   </div>
 </div>
