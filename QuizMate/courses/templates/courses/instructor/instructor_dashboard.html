@@ -38,7 +38,7 @@
 
   <!-- Course Management -->
   <h2>My Courses</h2>
-  <a href="#" class="btn btn-primary mb-3">Add New Course</a>
+  <a href="{% url 'course_create' %}" class="btn btn-primary mb-3">Add New Course</a>
   <div class="list-group">
     {% for course in courses %}
     <a href="{% url 'course_detail_instructor' course.id %}" class="list-group-item list-group-item-action">
