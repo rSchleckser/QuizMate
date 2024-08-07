@@ -27,16 +27,16 @@
           <h5 class="card-title">
             {{ course.name }}
           </h5>
-          <p class="card-text">
-            Instructor:
-            {{ course.instructor }}
-          </p>
+          <p class="card-text">Instructor: <strong>
+              {{ course.instructor.username }}</strong></p>
           <a href="{% url 'course_detail_student' pk=course.pk %}" class="btn btn-primary">View Course</a>
+          <a href="{% url 'course_enrollment' pk=course.pk %}" class="btn btn-success">Enroll</a>
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
+
 
   <!-- Enrolled Courses -->
   <h2>Enrolled Courses</h2>
@@ -52,12 +52,14 @@
             {{ enrollment.course.name }}
           </h5>
           <p class="card-text">Instructor:
-            {{ enrollment.course.instructor.username }}
+            <strong>
+              {{ enrollment.course.instructor.username }}</strong>
           </p>
           <p class="card-text">Progress:
             {{ enrollment.progress }}%
           </p>
           <a href="{% url 'course_detail_student' enrollment.course.id %}" class="btn btn-primary">View Course</a>
+          <a href="{% url 'course_detail_student' enrollment.course.id %}" class="btn btn-danger">Unenroll</a>
         </div>
       </div>
     </div>

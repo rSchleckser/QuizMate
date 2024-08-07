@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, CourseForm
@@ -97,6 +97,16 @@ def course_list(request):
     courses = Course.objects.all()
     return render(request, 'courses/course_list.html', {'courses': courses})
 
+# =========== COURSE ENROLLMENT ===========
+def course_enrollment(request, pk):
+    if not request.user.is_student:
+        return redirect('login')  
+    course = Course.objects.get(id=pk)
+    enrollment, created = Enrollment.objects.get_or_create(student=request.user, course=course)
+    return redirect('student_dashboard')
+
+
+# =========== COURSE DETAILS ==============
 def course_detail_student(request, pk):
     course = Course.objects.get(id=pk)
     quizzes = Quiz.objects.filter(course=course)
