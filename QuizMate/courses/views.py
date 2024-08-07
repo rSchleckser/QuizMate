@@ -105,6 +105,15 @@ def course_enrollment(request, pk):
     enrollment, created = Enrollment.objects.get_or_create(student=request.user, course=course)
     return redirect('student_dashboard')
 
+def course_unenroll(request, pk):
+    if not request.user.is_student:
+        return redirect('login')
+    course = Course.objects.get(id=pk)
+    enrollment = Enrollment.objects.get(student=request.user, course=course)
+    enrollment.delete()
+
+    return redirect('student_dashboard')
+
 
 # =========== COURSE DETAILS ==============
 def course_detail_student(request, pk):

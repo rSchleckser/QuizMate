@@ -59,7 +59,7 @@
             {{ enrollment.progress }}%
           </p>
           <a href="{% url 'course_detail_student' enrollment.course.id %}" class="btn btn-primary">View Course</a>
-          <a href="{% url 'course_detail_student' enrollment.course.id %}" class="btn btn-danger">Unenroll</a>
+          <a href="{% url 'course_unenroll' enrollment.course.pk %}" class="btn btn-danger">Unenroll</a>
         </div>
       </div>
     </div>
