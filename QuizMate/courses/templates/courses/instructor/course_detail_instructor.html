@@ -1,1 +1,78 @@
-<h1>Instructor Course Detail</h1>
+{% extends 'courses/base.html' %}
+
+{% block title %}Course Details - Instructor{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Course Details</h1>
+
+  <!-- Course Information -->
+  <div class="card mb-4 shadow-sm">
+    {% if course.image %}
+    <img src="{{ course.image }}" class="card-img-top" alt="{{ course.name }}">
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ course.name }}
+      </h5>
+      <p class="card-text">
+        {{ course.description }}
+      </p>
+      <p class="card-text">Instructor: <strong>
+          {{ course.instructor.username }}</strong></p>
+    </div>
+  </div>
+
+  <!-- Enrolled Students -->
+  <h2>Enrolled Students</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Email</th>
+        <th>Progress</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for enrollment in course.enrollments.all %}
+      <tr>
+        <td>
+          {{ enrollment.student.username }}
+        </td>
+        <td>
+          {{ enrollment.student.email }}
+        </td>
+        <td>
+          {{ enrollment.progress }}%
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Course Quizzes -->
+  <h2>Quizzes</h2>
+  <div class="row">
+    {% for quiz in course.quizzes.all %}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ quiz.title }}
+          </h5>
+          <p class="card-text">
+            {{ quiz.description }}
+          </p>
+          <a href="{% url 'quiz_detail_instructor' pk=quiz.pk %}" class="btn btn-primary">View Quiz</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Add New Quiz -->
+  <a href="#" class="btn btn-success">Add New Quiz</a>
+</div>
+{% endblock %}
+
+<!-- {% url 'quiz_create' course.pk %} -->
