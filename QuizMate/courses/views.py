@@ -61,6 +61,8 @@ def instructor_dashboard(request):
 
 # POST 
 def course_create(request):
+    if not request.user.is_authenticated or not request.user.is_instructor:
+        return redirect('login')
     if request.method == 'POST':
        form = CourseForm(request.POST)
        if form.is_valid():
@@ -74,6 +76,8 @@ def course_create(request):
 
 # EDIT
 def course_edit(request, pk):
+    if not request.user.is_authenticated or not request.user.is_instructor:
+        return redirect('login')
     course = Course.objects.get(pk=pk)
     if request.method == "POST":
         form = CourseForm(request.POST, instance=course)
