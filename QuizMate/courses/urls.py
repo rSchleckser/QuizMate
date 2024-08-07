@@ -26,6 +26,10 @@ urlpatterns = [
     path('quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
     # path('instructor/quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
 
+# Student Quiz
+   path('student/course/<int:course_id>/quiz/<int:quiz_id>/', views.take_quiz, name='take_quiz'),
+
+
 # Courses
 # Student Course Enrollment
     path('enroll/<int:pk>/', views.course_enrollment, name='course_enrollment'),

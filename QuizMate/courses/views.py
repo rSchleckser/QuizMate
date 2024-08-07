@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect,  redirect
+from django.shortcuts import render, redirect,  redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, CourseForm, QuizForm
@@ -174,6 +174,10 @@ def course_detail_student(request, pk):
     quizzes = Quiz.objects.filter(course=course)
     return render(request, 'courses/student/course_detail_student.html', {'course': course, 'quizzes': quizzes})
 
+def take_quiz(request, course_id, quiz_id):
+    course = get_object_or_404(Course, id=course_id)
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+    return render(request, 'courses/student/take_quiz.html', {'course': course, 'quiz': quiz})
 def enrolled_courses(request):
     enrollments = Enrollment.objects.filter(student=request.user)
     courses = [enrollment.course for enrollment in enrollments]
