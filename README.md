@@ -123,9 +123,4 @@ QuizMate is designed to simplify the process of course and quiz management for i
 
 ## Trello Board
 
-Visit our [Trello Board](https://trello.com/invite/b/66b2ee72447f4f92f48b2e02/ATTI9eedb0b653f106bf7ad903831173cfcbF986AB3B/quizmate-development) to see the development story of QuizMate.
-
-
-
-
-
+Visit our [Trello Board](https://trello.com/invite/b/66b2ee72447f4f92f48b2e02/ATTI9eedb0b653f106bf7ad903831173cfcbF986AB3B/quizmate-development) to see the development of QuizMate.
