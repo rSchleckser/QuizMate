@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Quizzes{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Quizzes for
+    {{ course.name }}
+  </h1>
+  <a href="{% url 'quiz_create' course.id %}" class="btn btn-success mb-4">Create New Quiz</a>
+  <div class="row">
+    {% for quiz in quizzes %}
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ quiz.title }}
+          </h5>
+          <p class="card-text">
+            {{ quiz.description }}
+          </p>
+          <a href="{% url 'quiz_detail' pk=quiz.id %}" class="btn btn-primary">View Quiz</a>
+          <a href="{% url 'quiz_edit' pk=quiz.id %}" class="btn btn-warning">Edit Quiz</a>
+          <a href="{% url 'quiz_delete' pk=quiz.id %}" class="btn btn-danger">Delete Quiz</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

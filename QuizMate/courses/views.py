@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,  redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomUserCreationForm, CourseForm
+from .forms import CustomUserCreationForm, CourseForm, QuizForm
 from .models import CustomUser, Course, Enrollment, Quiz, Question, Submission
 
 
@@ -116,16 +116,37 @@ def course_unenroll(request, pk):
 
 
 # =========== COURSE DETAILS ==============
-def course_detail_student(request, pk):
-    course = Course.objects.get(id=pk)
-    quizzes = Quiz.objects.filter(course=course)
-    return render(request, 'courses/student/course_detail_student.html', {'course': course, 'quizzes': quizzes})
 
+# Instructors 
 def course_detail_instructor(request, pk):
     course = Course.objects.get(id=pk)
     students = Enrollment.objects.filter(course=course)
     return render(request, 'courses/instructor/course_detail_instructor.html', {'course': course, 'students': students})
 
+def quiz_create(request, pk):
+    if not request.user.is_authenticated or not request.user.is_instructor:
+        return redirect('login')
+
+    course = Course.objects.get(id=pk)
+
+    if request.method == 'POST':
+        form = QuizForm(request.POST)
+        if form.is_valid():
+            quiz = form.save(commit=False)
+            quiz.course = course
+            quiz.save()
+            return redirect('course_detail_instructor', pk=course.pk)
+    else:
+        form = QuizForm()
+
+    return render(request, 'courses/instructor/quiz/quiz_form.html', {'form': form, 'course': course})
+
+
+# Students
+def course_detail_student(request, pk):
+    course = Course.objects.get(id=pk)
+    quizzes = Quiz.objects.filter(course=course)
+    return render(request, 'courses/student/course_detail_student.html', {'course': course, 'quizzes': quizzes})
 
 def enrolled_courses(request):
     enrollments = Enrollment.objects.filter(student=request.user)

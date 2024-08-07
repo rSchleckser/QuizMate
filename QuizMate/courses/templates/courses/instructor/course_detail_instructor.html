@@ -63,7 +63,7 @@
           <p class="card-text">
             {{ quiz.description }}
           </p>
-          <a href="{% url 'quiz_detail_instructor' pk=quiz.pk %}" class="btn btn-primary">View Quiz</a>
+          <a href="#" class="btn btn-primary">View Quiz</a>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
   </div>
 
   <!-- Add New Quiz -->
-  <a href="#" class="btn btn-success">Add New Quiz</a>
+  <a href="{% url 'quiz_create' course.pk %}" class="btn btn-success">Add New Quiz</a>
 </div>
 {% endblock %}
 

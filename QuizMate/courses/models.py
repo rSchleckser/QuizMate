@@ -23,12 +23,12 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
-    text = models.CharField(max_length=255)
+    question = models.CharField(max_length=255)
     option1 = models.CharField(max_length=100)
     option2 = models.CharField(max_length=100)
     option3 = models.CharField(max_length=100)
     option4 = models.CharField(max_length=100)
-    correct_option = models.CharField(max_length=100)
+    correct_option = models.CharField(max_length=100, default='correct Choice')
 
 class Submission(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='submissions')
