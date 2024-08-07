@@ -72,6 +72,19 @@ def course_create(request):
         form = CourseForm()
     return render(request, 'courses/instructor/course_form.html', {'form': form})
 
+# EDIT
+def course_edit(request, pk):
+    course = Course.objects.get(pk=pk)
+    if request.method == "POST":
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            course = form.save()
+            return redirect('instructor_dashboard')
+    else:
+        form = CourseForm(instance=course)
+    return render(request, 'courses/instructor/course_form.html', {'form': form})
+
+
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'courses/course_list.html', {'courses': courses})

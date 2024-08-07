@@ -15,7 +15,7 @@
 
   <!-- Display course image if available -->
   {% if course.image %}
-  <img src="{{ course.image.url }}" class="img-fluid" alt="{{ course.name }}">
+  <img src="{{ course.image }}" class="img-fluid" alt="{{ course.name }}">
   {% else %}
   <img src="https://via.placeholder.com/300" class="img-fluid" alt="No Image Available">
   {% endif %}

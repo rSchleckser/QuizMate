@@ -54,7 +54,7 @@
       <small>Students Enrolled:
         {{ course.enrollment_set.count }}</small>
       <div class="btn-group mt-2" role="group">
-        <a href="#" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{% url 'course_edit' course.id %}" class="btn btn-warning btn-sm">Edit</a>
         <a href="#" class="btn btn-danger btn-sm">Delete</a>
       </div>
     </a>
