@@ -84,6 +84,10 @@ def course_edit(request, pk):
         form = CourseForm(instance=course)
     return render(request, 'courses/instructor/course_form.html', {'form': form})
 
+# DELETE
+def course_delete(request, pk):
+    Course.objects.get(id=pk).delete()
+    return redirect('instructor_dashboard')
 
 def course_list(request):
     courses = Course.objects.all()
