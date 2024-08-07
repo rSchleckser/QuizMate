@@ -1,0 +1,17 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Create Question{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Add a New Question to "
+    {{ quiz.title }}"
+  </h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Save Question</button>
+  </form>
+</div>
+{% endblock %}

@@ -121,7 +121,17 @@ def course_unenroll(request, pk):
 def course_detail_instructor(request, pk):
     course = Course.objects.get(id=pk)
     students = Enrollment.objects.filter(course=course)
-    return render(request, 'courses/instructor/course_detail_instructor.html', {'course': course, 'students': students})
+    quizzes = course.quizzes.all()
+    return render(request, 'courses/instructor/course_detail_instructor.html', {'course': course, 'students': students, 'quizzes': quizzes,})
+    
+from django.shortcuts import render, get_object_or_404
+from .models import Quiz, Question
+from .forms import QuestionForm
+
+def quiz_detail_instructor(request, pk):
+    quiz = Quiz.objects.get(id=pk)
+    questions = quiz.questions.all()
+    return render(request, 'courses/instructor/quiz/quiz_detail.html', {'quiz': quiz, 'questions': questions})
 
 def quiz_create(request, pk):
     if not request.user.is_authenticated or not request.user.is_instructor:
@@ -141,7 +151,23 @@ def quiz_create(request, pk):
 
     return render(request, 'courses/instructor/quiz/quiz_form.html', {'form': form, 'course': course})
 
+def question_create(request, pk):
+    if not request.user.is_authenticated or not request.user.is_instructor:
+        return redirect('login')
 
+    quiz = Quiz.objects.get(id=pk)
+
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.quiz = quiz
+            question.save()
+            return redirect('quiz_detail_instructor', pk=quiz.pk)  
+    else:
+        form = QuestionForm()
+
+    return render(request, 'courses/instructor/quiz/question_form.html', {'form': form, 'quiz': quiz})
 # Students
 def course_detail_student(request, pk):
     course = Course.objects.get(id=pk)

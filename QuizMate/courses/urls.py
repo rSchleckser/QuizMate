@@ -20,6 +20,10 @@ urlpatterns = [
 
 # Instructor Course Quiz CRUD
     path('instructor/course/<int:pk>/quiz/create/', views.quiz_create, name='quiz_create'),
+
+    path('quiz/<int:pk>/question/create/', views.question_create, name='question_create'),
+
+    path('quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
     # path('instructor/quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
 
 # Courses

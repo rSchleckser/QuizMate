@@ -1,0 +1,28 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}Quiz Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>
+    {{ quiz.title }}
+  </h1>
+  <p>
+    {{ quiz.description }}
+  </p>
+
+  <h2>Questions</h2>
+  <ul>
+    {% for question in questions %}
+    <li>
+      {{ question.question }} - Correct Answer:
+      {{ question.correct_option }}
+    </li>
+    {% empty %}
+    <li>No questions available.</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'question_create' quiz.pk %}" class="btn btn-success">Add Question</a>
+</div>
+{% endblock %}
