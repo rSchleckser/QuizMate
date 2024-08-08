@@ -124,9 +124,7 @@ def course_detail_instructor(request, pk):
     quizzes = course.quizzes.all()
     return render(request, 'courses/instructor/course_detail_instructor.html', {'course': course, 'students': students, 'quizzes': quizzes,})
     
-from django.shortcuts import render, get_object_or_404
-from .models import Quiz, Question
-from .forms import QuestionForm
+
 
 def quiz_detail_instructor(request, pk):
     quiz = Quiz.objects.get(id=pk)
@@ -168,6 +166,11 @@ def question_create(request, pk):
         form = QuestionForm()
 
     return render(request, 'courses/instructor/quiz/question_form.html', {'form': form, 'quiz': quiz})
+
+def quiz_delete(request, pk, course_pk):
+    quiz = Quiz.objects.get(pk=pk).delete()
+    return redirect('course_detail_instructor',pk = course_pk)
+
 # Students
 def course_detail_student(request, pk):
     course = Course.objects.get(id=pk)
@@ -178,6 +181,7 @@ def take_quiz(request, course_id, quiz_id):
     course = get_object_or_404(Course, id=course_id)
     quiz = get_object_or_404(Quiz, id=quiz_id)
     return render(request, 'courses/student/take_quiz.html', {'course': course, 'quiz': quiz})
+
 def enrolled_courses(request):
     enrollments = Enrollment.objects.filter(student=request.user)
     courses = [enrollment.course for enrollment in enrollments]

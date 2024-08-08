@@ -10,8 +10,7 @@
   <p>
     {{ quiz.description }}
   </p>
-  <a href="#" class="btn btn-danger">Remove Quiz</a>
-
+  <a href="{% url 'quiz_delete' quiz.course.pk quiz.pk %}" class="btn btn-danger">Remove Quiz</a>
 
   <h2>Questions</h2>
   <ul>

@@ -7,7 +7,7 @@
   <h1>Quizzes for
     {{ course.name }}
   </h1>
-  <a href="{% url 'quiz_create' course.id %}" class="btn btn-success mb-4">Create New Quiz</a>
+  <a href="{% url 'quiz_create' course.pk %}" class="btn btn-success mb-4">Create New Quiz</a>
   <div class="row">
     {% for quiz in quizzes %}
     <div class="col-md-4">
