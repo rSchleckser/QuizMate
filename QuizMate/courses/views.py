@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,  redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomUserCreationForm, CourseForm, QuizForm
+from .forms import CustomUserCreationForm, CourseForm, QuizForm, QuestionForm
 from .models import CustomUser, Course, Enrollment, Quiz, Question, Submission
 
 
@@ -124,8 +124,7 @@ def course_detail_instructor(request, pk):
     quizzes = course.quizzes.all()
     return render(request, 'courses/instructor/course_detail_instructor.html', {'course': course, 'students': students, 'quizzes': quizzes,})
     
-
-
+# Instructor Quiz
 def quiz_detail_instructor(request, pk):
     quiz = Quiz.objects.get(id=pk)
     questions = quiz.questions.all()
@@ -149,12 +148,28 @@ def quiz_create(request, pk):
 
     return render(request, 'courses/instructor/quiz/quiz_form.html', {'form': form, 'course': course})
 
+def quiz_edit(request, pk):
+    if not request.user.is_authenticated or not request.user.is_instructor:
+        return redirect('login')
+    quiz = Quiz.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = QuizForm(request.POST, instance=quiz)
+        if form.is_valid():
+            quiz = form.save()
+            return redirect('quiz_detail_instructor', pk= quiz.pk)
+    else:
+        form = QuizForm(instance=quiz)
+    return render(request, 'courses/instructor/quiz/quiz_form.html', {'form': form})
+
+def quiz_delete(request, pk, course_pk):
+    quiz = Quiz.objects.get(pk=pk).delete()
+    return redirect('course_detail_instructor',pk = course_pk)
+
+# Instructor Questions
 def question_create(request, pk):
     if not request.user.is_authenticated or not request.user.is_instructor:
         return redirect('login')
-
     quiz = Quiz.objects.get(id=pk)
-
     if request.method == 'POST':
         form = QuestionForm(request.POST)
         if form.is_valid():
@@ -167,9 +182,18 @@ def question_create(request, pk):
 
     return render(request, 'courses/instructor/quiz/question_form.html', {'form': form, 'quiz': quiz})
 
-def quiz_delete(request, pk, course_pk):
-    quiz = Quiz.objects.get(pk=pk).delete()
-    return redirect('course_detail_instructor',pk = course_pk)
+def question_edit(request, pk, quiz_pk):
+    if not request.user.is_authenticated or not request.user.is_instructor:
+        return redirect('login')
+    question = Question.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            question = form.save()
+            return redirect('quiz_detail_instructor', pk = quiz_pk)
+    else:
+        form = QuestionForm(instance=question)
+    return render(request, 'courses/instructor/quiz/question_form.html', {'form': form})
 
 # Students
 def course_detail_student(request, pk):

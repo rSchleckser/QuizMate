@@ -10,22 +10,29 @@
   <p>
     {{ quiz.description }}
   </p>
+  <a href="{% url 'quiz_edit' quiz.pk %}" class="btn btn-warning">Edit Quiz</a>
   <a href="{% url 'quiz_delete' quiz.course.pk quiz.pk %}" class="btn btn-danger">Remove Quiz</a>
 
   <h2>Questions</h2>
   <ul>
     {% for question in questions %}
     <li>
-      {{ question.question }} - Correct Answer:
-      {{ question.correct_option }}
+      {{ question.question }}
+
+      <h4>Correct Answer:
+        {{ question.correct_option }}
+      </h4>
+      <a href="{% url 'question_edit' question.quiz.pk question.pk %}" class="btn btn-warning">Edit Question</a>
+      <a href="#" class="btn btn-danger">Remove Question</a>
+
     </li>
     {% empty %}
     <li>No questions available.</li>
     {% endfor %}
   </ul>
+  <h2>{{question.quiz.pk}}</h2>
 
   <a href="{% url 'question_create' quiz.pk %}" class="btn btn-success">Add Question</a>
-  <a href="#" class="btn btn-warning">Edit Question</a>
-  <a href="#" class="btn btn-danger">Remove Question</a>
+
 </div>
 {% endblock %}

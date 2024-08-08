@@ -21,10 +21,13 @@ urlpatterns = [
 # Instructor Course Quiz CRUD
     path('quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
     path('instructor/course/<int:pk>/quiz/create/', views.quiz_create, name='quiz_create'),
+    path('instructor/course/<int:pk>/quiz/edit/', views.quiz_edit, name='quiz_edit'),
     path('instructor/course/<int:course_pk>/quiz/<int:pk>/delete/', views.quiz_delete, name='quiz_delete'),
     
 # Instructor Course Question CRUD
     path('quiz/<int:pk>/question/create/', views.question_create, name='question_create'),
+    path('quiz/<int:quiz_pk>/question/<int:pk>/edit/', views.question_edit, name='question_edit'),
+
 
     # path('instructor/quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
 
