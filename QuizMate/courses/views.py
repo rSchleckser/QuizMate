@@ -195,6 +195,11 @@ def question_edit(request, pk, quiz_pk):
         form = QuestionForm(instance=question)
     return render(request, 'courses/instructor/quiz/question_form.html', {'form': form})
 
+def question_delete(request, pk, quiz_pk):
+    question = Question.objects.get(pk=pk).delete()
+    return redirect('quiz_detail_instructor', pk = quiz_pk)
+
+
 # Students
 def course_detail_student(request, pk):
     course = Course.objects.get(id=pk)

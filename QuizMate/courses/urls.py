@@ -27,6 +27,7 @@ urlpatterns = [
 # Instructor Course Question CRUD
     path('quiz/<int:pk>/question/create/', views.question_create, name='question_create'),
     path('quiz/<int:quiz_pk>/question/<int:pk>/edit/', views.question_edit, name='question_edit'),
+    path('quiz/<int:quiz_pk>/question/<int:pk>/delete/', views.question_delete, name='question_delete'),
 
 
     # path('instructor/quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
