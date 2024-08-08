@@ -209,7 +209,62 @@ def course_detail_student(request, pk):
 def take_quiz(request, course_id, quiz_id):
     course = get_object_or_404(Course, id=course_id)
     quiz = get_object_or_404(Quiz, id=quiz_id)
-    return render(request, 'courses/student/take_quiz.html', {'course': course, 'quiz': quiz})
+    questions = quiz.questions.all()
+
+    if request.method == 'POST':
+        score = 0
+        total_questions = questions.count()
+        student_answers = []
+
+        for question in questions:
+            selected_option = request.POST.get(f'question_{question.id}')
+            is_correct = question.is_correct(selected_option)
+            if selected_option and is_correct:
+                score += 1
+            student_answers.append({
+                'question': question,
+                'selected_option': selected_option,
+                'is_correct': is_correct
+            })
+
+        percentage = (score / total_questions) * 100
+        feedback = f'You scored {score} out of {total_questions} ({percentage:.2f}%).'
+
+    
+        Submission.objects.create(student=request.user, quiz=quiz, score=score)
+
+        return render(request, 'courses/student/quiz/quiz_result.html', {
+            'course': course,
+            'quiz': quiz,
+            'score': score,
+            'total_questions': total_questions,
+            'percentage': percentage,
+            'feedback': feedback,
+            'student_answers': student_answers,
+        })
+    return render(request, 'courses/student/quiz/take_quiz.html', {'course': course, 'quiz': quiz})
+
+
+def quiz_result(request, course_id, quiz_id):
+    course = get_object_or_404(Course, id=course_id)
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+    score = request.GET.get('score')
+    total_questions = request.GET.get('total_questions')
+    percentage = request.GET.get('percentage')
+    feedback = request.GET.get('feedback')
+    student_answers = request.GET.get('student_answers')
+
+    return render(request, 'courses/student/quiz/quiz_result.html', {
+        'course': course,
+        'quiz': quiz,
+        'score': score,
+        'total_questions': total_questions,
+        'percentage': percentage,
+        'feedback': feedback,
+        'student_answers': student_answers,
+    })
+
+
 
 def enrolled_courses(request):
     enrollments = Enrollment.objects.filter(student=request.user)
