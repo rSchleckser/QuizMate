@@ -31,6 +31,13 @@
       <p class="mb-1">
         {{ quiz.description }}
       </p>
+      {% if quiz.id in user_submissions %}
+      <p class="text-success">Last Score:
+        {{ user_submissions|default:0 }}%
+      </p>
+      {% else %}
+      <p class="text-danger">Not Attempted</p>
+      {% endif %}
     </a>
     {% endfor %}
   </div>

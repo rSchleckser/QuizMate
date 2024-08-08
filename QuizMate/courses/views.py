@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect,  redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, CourseForm, QuizForm, QuestionForm
@@ -204,7 +204,22 @@ def question_delete(request, pk, quiz_pk):
 def course_detail_student(request, pk):
     course = Course.objects.get(id=pk)
     quizzes = Quiz.objects.filter(course=course)
-    return render(request, 'courses/student/course_detail_student.html', {'course': course, 'quizzes': quizzes})
+    submissions = Submission.objects.filter(student=request.user)
+    user_submissions = Submission.objects.filter(student=request.user, quiz__in=quizzes).values('quiz_id', 'score')
+    
+    user_submission_dict = {}
+    for submission in user_submissions:
+        quiz = Quiz.objects.get(id=submission['quiz_id'])
+        total_questions = quiz.questions.count()
+        percentage = (submission['score'] / total_questions) * 100
+        user_submission_dict[submission['quiz_id']] = percentage
+
+    return render(request, 'courses/student/course_detail_student.html', {
+        'course': course,
+        'quizzes': quizzes,
+        'user_submissions': user_submission_dict,
+        'submissions': submissions
+    })
 
 def take_quiz(request, course_id, quiz_id):
     course = get_object_or_404(Course, id=course_id)
@@ -214,24 +229,17 @@ def take_quiz(request, course_id, quiz_id):
     if request.method == 'POST':
         score = 0
         total_questions = questions.count()
-        student_answers = []
 
         for question in questions:
             selected_option = request.POST.get(f'question_{question.id}')
-            is_correct = question.is_correct(selected_option)
-            if selected_option and is_correct:
+            if selected_option and question.is_correct(selected_option):
                 score += 1
-            student_answers.append({
-                'question': question,
-                'selected_option': selected_option,
-                'is_correct': is_correct
-            })
 
         percentage = (score / total_questions) * 100
         feedback = f'You scored {score} out of {total_questions} ({percentage:.2f}%).'
 
-    
-        Submission.objects.create(student=request.user, quiz=quiz, score=score)
+        
+        Submission.objects.create(student=request.user, quiz=quiz, score=score, total_questions=total_questions)
 
         return render(request, 'courses/student/quiz/quiz_result.html', {
             'course': course,
@@ -240,7 +248,6 @@ def take_quiz(request, course_id, quiz_id):
             'total_questions': total_questions,
             'percentage': percentage,
             'feedback': feedback,
-            'student_answers': student_answers,
         })
     return render(request, 'courses/student/quiz/take_quiz.html', {'course': course, 'quiz': quiz})
 
