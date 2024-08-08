@@ -28,7 +28,11 @@ class Question(models.Model):
     option2 = models.CharField(max_length=100)
     option3 = models.CharField(max_length=100)
     option4 = models.CharField(max_length=100)
-    correct_option = models.CharField(max_length=100, default='correct Choice')
+    correct_option = models.CharField(max_length=100, default='Answer')
+
+    def is_correct(self, selected_option):
+        return str(self.correct_option) == str(selected_option)
+
 
 class Submission(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='submissions')
