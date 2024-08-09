@@ -3,6 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, CourseForm, QuizForm, QuestionForm
 from .models import CustomUser, Course, Enrollment, Quiz, Question, Submission
+from django.db.models import Max, Count
 
 
 def home(request):
@@ -201,8 +202,6 @@ def question_delete(request, pk, quiz_pk):
 
 
 # Students
-from django.db.models import Max
-
 def course_detail_student(request, pk):
     if not request.user.is_authenticated or not request.user.is_student:
         return redirect('login')
