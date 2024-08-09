@@ -201,25 +201,31 @@ def question_delete(request, pk, quiz_pk):
 
 
 # Students
+from django.db.models import Max
+
 def course_detail_student(request, pk):
+    if not request.user.is_authenticated or not request.user.is_student:
+        return redirect('login')
+        
     course = Course.objects.get(id=pk)
     quizzes = Quiz.objects.filter(course=course)
-    submissions = Submission.objects.filter(student=request.user)
-    user_submissions = Submission.objects.filter(student=request.user, quiz__in=quizzes).values('quiz_id', 'score')
+    print(Submission.objects.filter(student=request.user, quiz__in=quizzes).values('quiz').annotate(latest_submission_id=Max('id')))
     
-    user_submission_dict = {}
-    for submission in user_submissions:
-        quiz = Quiz.objects.get(id=submission['quiz_id'])
-        total_questions = quiz.questions.count()
-        percentage = (submission['score'] / total_questions) * 100
-        user_submission_dict[submission['quiz_id']] = percentage
+    latest_submissions = (
+        Submission.objects.filter(student=request.user, quiz__in=quizzes)
+        .values('quiz')
+        .annotate(latest_submission_id=Max('id'))
+    )
+    
+    user_submissions = Submission.objects.filter(id__in=[sub['latest_submission_id'] for sub in latest_submissions])
 
     return render(request, 'courses/student/course_detail_student.html', {
         'course': course,
         'quizzes': quizzes,
-        'user_submissions': user_submission_dict,
-        'submissions': submissions
+        'user_submissions': user_submissions,
     })
+
+
 
 def take_quiz(request, course_id, quiz_id):
     course = get_object_or_404(Course, id=course_id)

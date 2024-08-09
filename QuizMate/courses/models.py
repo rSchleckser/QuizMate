@@ -38,8 +38,11 @@ class Submission(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='submissions')
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='submissions')
     score = models.FloatField()
-    total_questions = models.IntegerField() 
+    total_questions = models.IntegerField()
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def percentage(self):
-        return (self.score / self.total_questions) * 100
+        if self.total_questions > 0:
+            return (self.score / self.total_questions) * 100
+        else:
+            return 0  

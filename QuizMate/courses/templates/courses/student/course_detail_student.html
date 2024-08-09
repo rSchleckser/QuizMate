@@ -1,17 +1,11 @@
 {% extends 'courses/base.html' %}
 
-{% block title %}Course Details -
-
-{{ course.name }}{% endblock %}
+{% block title %}Course Details - {{ course.name }}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-  <h1>
-    {{ course.name }}
-  </h1>
-  <p>
-    {{ course.description }}
-  </p>
+  <h1>{{ course.name }}</h1>
+  <p>{{ course.description }}</p>
 
   <!-- Display course image if available -->
   {% if course.image %}
@@ -25,19 +19,13 @@
   <div class="list-group">
     {% for quiz in quizzes %}
     <a href="{% url 'take_quiz' course.id quiz.id %}" class="list-group-item list-group-item-action">
-      <h5 class="mb-1">
-        {{ quiz.title }}
-      </h5>
-      <p class="mb-1">
-        {{ quiz.description }}
-      </p>
-      {% if quiz.id in user_submissions %}
-      <p class="text-success">Last Score:
-        {{ user_submissions|default:0 }}%
-      </p>
-      {% else %}
-      <p class="text-danger">Not Attempted</p>
-      {% endif %}
+      <h5 class="mb-1">{{ quiz.title }}</h5>
+      <p class="mb-1">{{ quiz.description }}</p>
+      {% for submission in user_submissions %}
+        {% if submission.quiz.id == quiz.id %}
+          <p>Last Score: <strong class='text-success'>{{ submission.percentage }}%</strong></p>
+        {% endif %}
+      {% endfor %}
     </a>
     {% endfor %}
   </div>
