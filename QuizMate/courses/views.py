@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, CourseForm, QuizForm, QuestionForm
 from .models import CustomUser, Course, Enrollment, Quiz, Question, Submission
-from django.db.models import Max, Count
+from django.db.models import Max, Count, Avg
 
 
 def home(request):
@@ -208,8 +208,16 @@ def course_detail_student(request, pk):
         
     course = Course.objects.get(id=pk)
     quizzes = Quiz.objects.filter(course=course)
-    print(Submission.objects.filter(student=request.user, quiz__in=quizzes).values('quiz').annotate(latest_submission_id=Max('id')))
-    
+    submissions = Submission.objects.filter(student=request.user)
+
+    quiz_submissions = (
+        Submission.objects.filter(student=request.user, quiz__in=quizzes)
+        .values('quiz')
+        .annotate(number_of_sub=Count('id'))
+        )
+    submissions_count_dict = {item['quiz']: item['number_of_sub'] for item in quiz_submissions}
+    print(submissions_count_dict)
+
     latest_submissions = (
         Submission.objects.filter(student=request.user, quiz__in=quizzes)
         .values('quiz')
@@ -217,12 +225,35 @@ def course_detail_student(request, pk):
     )
     
     user_submissions = Submission.objects.filter(id__in=[sub['latest_submission_id'] for sub in latest_submissions])
+    print(user_submissions)
 
+    user_quiz_submissions = Submission.objects.filter(id__in=[sub['number_of_sub'] for sub in quiz_submissions])
+    print(user_quiz_submissions)
+
+    quizzes_taken = user_submissions.count()
+    number_of_submissions = submissions.count()
+    quizzes_completed = quizzes.count()
+
+    average_percentage = (
+        sum(sub.percentage() for sub in user_submissions) / len(user_submissions)
+        if user_submissions else 0
+    )
+    
+    
+    quizzes_completed_percentage = (quizzes_taken / quizzes_completed * 100) if quizzes_completed > 0 else 0
+    quizzes_completed_percentage = "{:.2f}".format(quizzes_completed_percentage)
     return render(request, 'courses/student/course_detail_student.html', {
         'course': course,
         'quizzes': quizzes,
         'user_submissions': user_submissions,
+        'quiz_submissions': submissions_count_dict,
+        'number_of_quizzes_taken': quizzes_taken,
+        'number_of_submissions': number_of_submissions,
+        'average_percentage': round(average_percentage, 2),
+        'quizzes_completed_percentage': quizzes_completed_percentage
+        
     })
+    
 
 
 
@@ -234,16 +265,22 @@ def take_quiz(request, course_id, quiz_id):
     if request.method == 'POST':
         score = 0
         total_questions = questions.count()
+        student_answers = []
 
         for question in questions:
             selected_option = request.POST.get(f'question_{question.id}')
-            if selected_option and question.is_correct(selected_option):
+            is_correct = question.is_correct(selected_option)
+            if selected_option and is_correct:
                 score += 1
+            student_answers.append({
+                'question': question,
+                'selected_option': selected_option,
+                'is_correct': is_correct
+            })
 
         percentage = (score / total_questions) * 100
         feedback = f'You scored {score} out of {total_questions} ({percentage:.2f}%).'
 
-        
         Submission.objects.create(student=request.user, quiz=quiz, score=score, total_questions=total_questions)
 
         return render(request, 'courses/student/quiz/quiz_result.html', {
@@ -253,18 +290,22 @@ def take_quiz(request, course_id, quiz_id):
             'total_questions': total_questions,
             'percentage': percentage,
             'feedback': feedback,
+            'student_answers': student_answers,
         })
+    
     return render(request, 'courses/student/quiz/take_quiz.html', {'course': course, 'quiz': quiz})
 
 
 def quiz_result(request, course_id, quiz_id):
     course = get_object_or_404(Course, id=course_id)
     quiz = get_object_or_404(Quiz, id=quiz_id)
-    score = request.GET.get('score')
-    total_questions = request.GET.get('total_questions')
-    percentage = request.GET.get('percentage')
-    feedback = request.GET.get('feedback')
-    student_answers = request.GET.get('student_answers')
+    
+    quiz_results = request.session.get('quiz_results', {})
+    score = quiz_results.get('score', 0)
+    total_questions = quiz_results.get('total_questions', 0)
+    percentage = quiz_results.get('percentage', 0)
+    feedback = quiz_results.get('feedback', '')
+    student_answers = quiz_results.get('student_answers', [])
 
     return render(request, 'courses/student/quiz/quiz_result.html', {
         'course': course,
@@ -275,6 +316,8 @@ def quiz_result(request, course_id, quiz_id):
         'feedback': feedback,
         'student_answers': student_answers,
     })
+
+
 
 
 

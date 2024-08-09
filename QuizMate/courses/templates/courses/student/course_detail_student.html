@@ -14,6 +14,66 @@
   <img src="https://via.placeholder.com/300" class="img-fluid" alt="No Image Available">
   {% endif %}
 
+  <!-- Metrics Dashboard -->
+  <div class="metrics-dashboard mb-4">
+    <h2>Dashboard</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Number of Quizzes Taken</h5>
+            <p class="card-text">{{ number_of_quizzes_taken }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Total Number of Quizzes</h5>
+            <p class="card-text">{{ quizzes|length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Quizzes Completed Percentage</h5>
+            <p class="card-text">
+              {% if quizzes|length > 0 %}
+                {{ quizzes_completed_percentage }}%
+              {% else %}
+                N/A
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Average Grade</h5>
+            <p class="card-text">
+              Average Percentage: <strong class="text-primary">{{ average_percentage }}%</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Number of Submissions</h5>
+            <p class="card-text">{{ number_of_submissions }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Display quizzes -->
   <h2 class="mt-4">Quizzes</h2>
   <div class="list-group">
@@ -24,6 +84,14 @@
       {% for submission in user_submissions %}
         {% if submission.quiz.id == quiz.id %}
           <p>Last Score: <strong class='text-success'>{{ submission.percentage }}%</strong></p>
+      
+          {% for quiz_submission in quiz_submissions %}
+          {% if quiz.id in quiz_submissions %}
+          <p>Number of Submissions: <strong class="text-primary">{{ quiz_submissions }}</strong></p>
+          {% endif %}
+          {% endfor %}
+
+
         {% endif %}
       {% endfor %}
     </a>

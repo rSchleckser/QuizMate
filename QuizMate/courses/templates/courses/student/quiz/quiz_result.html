@@ -1,49 +1,38 @@
 {% extends 'courses/base.html' %}
 
-{% block title %}Quiz Result -
-
-{{ quiz.title }}{% endblock %}
+{% block title %}Quiz Result - {{ quiz.title }}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
   <h1>Quiz Result</h1>
-  <p>
-    {{ feedback }}
-  </p>
-  <p>You answered
-    {{ score }} out of
-    {{ total_questions }} questions correctly.
-  </p>
-  <p>Percentage:
-    {{ percentage }}%
-  </p>
+  <p>{{ feedback }}</p>
+  <p>You answered {{ score }} out of {{ total_questions }} questions correctly.</p>
+  <p>Percentage: {{ percentage }}%</p>
   <a href="{% url 'course_detail_student' course.id %}" class="btn btn-primary">Back to Course</a>
 
   <hr>
 
   {% for answer in student_answers %}
   <div class="mb-4">
-    <h5>
-      {{ answer.question.question }}
-    </h5>
+    <h5>{{ answer.question.question }}</h5>
     <ul class="list-group">
       {% if answer.question.option1 %}
-      <li class="list-group-item {% if answer.selected_option == '1' and answer.is_correct %}bg-success text-white{% elif answer.selected_option == '1' %}bg-danger text-white{% endif %} {% if answer.question.correct_option == '1' %}bg-success text-white{% endif %}">
+      <li class="list-group-item {% if answer.selected_option == '1' %} {% if answer.is_correct %}bg-success text-white{% else %}bg-danger text-white{% endif %} {% endif %} {% if answer.question.correct_option == '1' %}bg-success text-white{% endif %}">
         {{ answer.question.option1 }}
       </li>
       {% endif %}
       {% if answer.question.option2 %}
-      <li class="list-group-item {% if answer.selected_option == '2' and answer.is_correct %}bg-success text-white{% elif answer.selected_option == '2' %}bg-danger text-white{% endif %} {% if answer.question.correct_option == '2' %}bg-success text-white{% endif %}">
+      <li class="list-group-item {% if answer.selected_option == '2' %} {% if answer.is_correct %}bg-success text-white{% else %}bg-danger text-white{% endif %} {% endif %} {% if answer.question.correct_option == '2' %}bg-success text-white{% endif %}">
         {{ answer.question.option2 }}
       </li>
       {% endif %}
       {% if answer.question.option3 %}
-      <li class="list-group-item {% if answer.selected_option == '3' and answer.is_correct %}bg-success text-white{% elif answer.selected_option == '3' %}bg-danger text-white{% endif %} {% if answer.question.correct_option == '3' %}bg-success text-white{% endif %}">
+      <li class="list-group-item {% if answer.selected_option == '3' %} {% if answer.is_correct %}bg-success text-white{% else %}bg-danger text-white{% endif %} {% endif %} {% if answer.question.correct_option == '3' %}bg-success text-white{% endif %}">
         {{ answer.question.option3 }}
       </li>
       {% endif %}
       {% if answer.question.option4 %}
-      <li class="list-group-item {% if answer.selected_option == '4' and answer.is_correct %}bg-success text-white{% elif answer.selected_option == '4' %}bg-danger text-white{% endif %} {% if answer.question.correct_option == '4' %}bg-success text-white{% endif %}">
+      <li class="list-group-item {% if answer.selected_option == '4' %} {% if answer.is_correct %}bg-success text-white{% else %}bg-danger text-white{% endif %} {% endif %} {% if answer.question.correct_option == '4' %}bg-success text-white{% endif %}">
         {{ answer.question.option4 }}
       </li>
       {% endif %}
