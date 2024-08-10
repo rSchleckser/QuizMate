@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'QuizMate.urls'
+ROOT_URLCONF = 'quizmate.urls'
 
 TEMPLATES = [
     {
@@ -76,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'QuizMate.wsgi.application'
+WSGI_APPLICATION = 'quizmate.wsgi.application'
 
 
 # Database
