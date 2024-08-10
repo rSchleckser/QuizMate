@@ -1,22 +1,22 @@
 databases:
-  - name: quiz-mate
+  - name: course-db
     plan: free
-    databaseName: quiz_mate
-    user: quiz_mate_user
+    databaseName: course_db
+    user: course_user
 
 services:
   - type: web
     plan: free
-    name: quiz-mate
+    name: course-service
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn quizmate.asgi:application -k uvicorn.workers.UvicornWorker"
+    startCommand: "python -m gunicorn course.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: quiz_mate
+          name: course-db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
-        value: 4 
+        value: 4
