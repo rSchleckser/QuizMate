@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'course.urls'
+ROOT_URLCONF = 'QuizMate.urls'
 
 TEMPLATES = [
     {
@@ -76,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'course.wsgi.application'
+WSGI_APPLICATION = 'QuizMate.wsgi.application'
 
 
 # Database
@@ -133,7 +133,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'courses.CustomUser'
+AUTH_USER_MODEL = 'QuizMate.CustomUser'
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
