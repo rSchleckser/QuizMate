@@ -14,6 +14,7 @@ class Course(models.Model):
 class Enrollment(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='enrollments')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='enrollments')
+    grade = models.FloatField(default= 0.0)
     progress = models.FloatField(default=0.0)
 
 class Quiz(models.Model):

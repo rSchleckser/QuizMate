@@ -1,15 +1,14 @@
-{% extends 'courses/base.html' %}
-
-{% block title %}Student Dashboard - QuizMate{% endblock %}
-
-{% block content %}
+{% extends 'courses/base.html' %} {% block title %}Student Dashboard -
+QuizMate{% endblock %} {% block content %}
 <div class="container mt-4">
   <h1>Student Dashboard</h1>
 
   <!-- Welcome Message -->
   <div class="alert alert-info" role="alert">
     <h4 class="alert-heading">Welcome, {{ user.username }}!</h4>
-    <p>Here is an overview of your available courses and your enrolled courses.</p>
+    <p>
+      Here is an overview of your available courses and your enrolled courses.
+    </p>
   </div>
 
   <!-- Available Courses -->
@@ -19,13 +18,27 @@
     <div class="col-md-4">
       <div class="card mb-4 shadow-sm">
         {% if course.image %}
-        <img src="{{ course.image }}" class="card-img-top" alt="{{ course.name }}">
+        <img
+          src="{{ course.image }}"
+          class="card-img-top"
+          alt="{{ course.name }}"
+        />
         {% endif %}
         <div class="card-body">
           <h5 class="card-title">{{ course.name }}</h5>
-          <p class="card-text">Instructor: <strong>{{ course.instructor.username }}</strong></p>
-          <a href="{% url 'course_detail_student' pk=course.pk %}" class="btn btn-primary">View Course</a>
-          <a href="{% url 'course_enrollment' pk=course.pk %}" class="btn btn-success">Enroll</a>
+          <p class="card-text">
+            Instructor: <strong>{{ course.instructor.username }}</strong>
+          </p>
+          <a
+            href="{% url 'course_detail_student' pk=course.pk %}"
+            class="btn btn-primary"
+            >View Course</a
+          >
+          <a
+            href="{% url 'course_enrollment' pk=course.pk %}"
+            class="btn btn-success"
+            >Enroll</a
+          >
         </div>
       </div>
     </div>
@@ -39,14 +52,52 @@
     <div class="col-md-4">
       <div class="card mb-4 shadow-sm">
         {% if enrollment.course.image %}
-        <img src="{{ enrollment.course.image }}" class="card-img-top" alt="{{ enrollment.course.name }}">
+        <img
+          src="{{ enrollment.course.image }}"
+          class="card-img-top"
+          alt="{{ enrollment.course.name }}"
+        />
         {% endif %}
         <div class="card-body">
           <h5 class="card-title">{{ enrollment.course.name }}</h5>
-          <p class="card-text">Instructor: <strong>{{ enrollment.course.instructor.username }}</strong></p>
-          <p class="card-text">Progress: {{ enrollment.progress }}%</p>
-          <a href="{% url 'course_detail_student' enrollment.course.id %}" class="btn btn-primary">View Course</a>
-          <a href="{% url 'course_unenroll' enrollment.course.pk %}" class="btn btn-danger">Unenroll</a>
+
+          <div class="d-flex">
+            <p class="card-text" style="margin-right: 2rem">
+              Instructor:
+              <strong>{{ enrollment.course.instructor.username }}</strong>
+            </p>
+            {% if enrollment.grade >= 80 %}
+            <p class="card-text mb-1 ms-3">
+              Grade: <strong class='text-success'>{{ enrollment.grade }}%</strong>
+            </p>
+            {% elif enrollment.grade >= 50 %}
+            <p class="card-text mb-1 ms-3">
+              Grade: <strong class='text-warning'>{{ enrollment.grade }}%</strong>
+            </p>
+            {% else %}
+            <p class="card-text mb-1 ms-3">
+              Grade: <strong class='text-danger'>{{ enrollment.grade }}%</strong>
+            </p>
+            {% endif %}
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="card-text mb-3">Progress: <strong class='text-primary'>{{ enrollment.progress }}%</strong></p>
+            <div class="progress w-50 mb-3 me-1">
+                <div class="progress-bar" role="progressbar" style="width: {{ enrollment.progress }}%;" aria-valuenow="{{ enrollment.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+
+          <a
+            href="{% url 'course_detail_student' enrollment.course.id %}"
+            class="btn btn-primary"
+            >View Course</a
+          >
+          <a
+            href="{% url 'course_unenroll' enrollment.course.pk %}"
+            class="btn btn-danger"
+            >Unenroll</a
+          >
         </div>
       </div>
     </div>

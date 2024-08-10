@@ -254,6 +254,7 @@ def course_detail_student(request, pk):
     try:
         enrollment = Enrollment.objects.get(student=request.user, course=course)
         enrollment.progress = quizzes_completed_percentage
+        enrollment.grade = average_percentage
         enrollment.save()
     except Enrollment.DoesNotExist:
         pass
