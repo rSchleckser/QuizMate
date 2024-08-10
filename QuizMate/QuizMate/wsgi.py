@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'QuizMate.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'quizmate.settings')
 
 application = get_wsgi_application()
