@@ -76,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'QuizMate.wsgi.application'
+WSGI_APPLICATION = 'courses.wsgi.application'
 
 
 # Database
