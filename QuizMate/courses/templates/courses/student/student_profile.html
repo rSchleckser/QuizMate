@@ -1,0 +1,65 @@
+{% extends 'courses/base.html' %}
+
+{% block title %}My Course Details - QuizMate{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>My Course Details</h1>
+  
+  <!-- Student Information -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h4 class="card-title">{{ student.username }}</h4>
+      <p class="card-text"><strong>Enrollment Date:</strong> {{ student.date_joined|date:"F d, Y" }}</p>
+      <p class="card-text"><strong>Total Courses Enrolled:</strong> {{ enrollments.count }}</p>
+    </div>
+  </div>
+
+  <!-- Enrolled Courses -->
+  <h2>My Courses</h2>
+  <div class="list-group mb-4">
+    {% for enrollment in enrollments %}
+    <a href="{% url 'course_detail_student' enrollment.course.id %}" class="list-group-item list-group-item-action">
+      <h5 class="mb-1">{{ enrollment.course.name }}</h5>
+      <p class="mb-1">Progress: {{ enrollment.progress }}%</p>
+      <small>Grade: {{ enrollment.grade }}%</small>
+    </a>
+    {% empty %}
+    <p class="text-muted">You are not enrolled in any courses.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Course Performance -->
+  <h2>My Performance Overview</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card bg-info text-white mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Average Grade</h5>
+          <p class="card-text">{{ avg_grade|default:"N/A"|floatformat:2 }}%</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card bg-warning text-white mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Overall Progress</h5>
+          <p class="card-text">{{ avg_progress|default:"N/A"|floatformat:2 }}%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Messages or Notes Section -->
+    <h2>Student Notes</h2>
+    <div class="card mb-4">
+      <div class="card-body">
+        <textarea class="form-control" rows="5" placeholder="Leave a note or message for an instructor..."></textarea>
+        <button class="btn btn-primary mt-3">Save Note</button>
+      </div>
+    </div>
+
+  <!-- Back Button -->
+  <a href="{% url 'student_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

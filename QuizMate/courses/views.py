@@ -43,13 +43,14 @@ def logout_view(request):
 def student_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_student:
         return redirect('login')
-
+    student= request.user
     available_courses = Course.objects.exclude(enrollments__student=request.user)
     enrolled_courses = Enrollment.objects.filter(student=request.user)
 
     return render(request, 'courses/student/student_dashboard.html', {
         'available_courses': available_courses,
         'enrolled_courses': enrolled_courses,
+        'student': student,
     })
 
 def student_detail(request, student_id):
@@ -60,14 +61,28 @@ def student_detail(request, student_id):
     avg_grade = enrollments.aggregate(avg_grade=Avg('grade'))['avg_grade']
     avg_progress = enrollments.aggregate(avg_progress=Avg('progress'))['avg_progress']
    
-    print(enrollments.aggregate(avg_progress=Avg('progress')))
-
     return render(request, 'courses/instructor/student_detail.html', {
             'student': student,
             'enrollments': enrollments,
             'avg_grade': avg_grade,
             'avg_progress': avg_progress,
         })
+
+def student_profile(request, student_id):
+    
+    student = CustomUser.objects.get(id=student_id)
+    enrollments = Enrollment.objects.filter(student=student)
+
+    avg_grade = enrollments.aggregate(avg_grade=Avg('grade'))['avg_grade']
+    avg_progress = enrollments.aggregate(avg_progress=Avg('progress'))['avg_progress']
+   
+    return render(request, 'courses/student/student_profile.html', {
+            'student': student,
+            'enrollments': enrollments,
+            'avg_grade': avg_grade,
+            'avg_progress': avg_progress,
+        })
+
 
 
 def instructor_dashboard(request):
@@ -230,7 +245,7 @@ def question_delete(request, pk, quiz_pk):
 def course_detail_student(request, pk):
     if not request.user.is_authenticated or not request.user.is_student:
         return redirect('login')
-        
+    student= request.user
     course = Course.objects.get(id=pk)
     quizzes = Quiz.objects.filter(course=course)
     submissions = Submission.objects.filter(student=request.user)
@@ -263,6 +278,7 @@ def course_detail_student(request, pk):
         pass
     
     return render(request, 'courses/student/course_detail_student.html', {
+        'student':student,
         'course': course,
         'quizzes': quizzes,
         'user_submissions': user_submissions,
@@ -276,6 +292,7 @@ def course_detail_student(request, pk):
 
 
 def take_quiz(request, course_id, quiz_id):
+    student= request.user
     course = Course.objects.get(id=course_id)
     quiz = Quiz.objects.get(id=quiz_id)
     questions = quiz.questions.all()
@@ -302,6 +319,7 @@ def take_quiz(request, course_id, quiz_id):
         Submission.objects.create(student=request.user, quiz=quiz, score=score, total_questions=total_questions)
 
         return render(request, 'courses/student/quiz/quiz_result.html', {
+            'student':student,
             'course': course,
             'quiz': quiz,
             'score': score,
@@ -311,7 +329,7 @@ def take_quiz(request, course_id, quiz_id):
             'student_answers': student_answers,
         })
     
-    return render(request, 'courses/student/quiz/take_quiz.html', {'course': course, 'quiz': quiz})
+    return render(request, 'courses/student/quiz/take_quiz.html', {'course': course, 'quiz': quiz,'student':student, })
 
 
 def quiz_result(request, course_id, quiz_id):
