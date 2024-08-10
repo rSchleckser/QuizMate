@@ -68,11 +68,13 @@ QuizMate{% endblock %} {% block content %}
             </p>
             {% if enrollment.grade >= 80 %}
             <p class="card-text mb-1 ms-3">
-              Grade: <strong class='text-success'>{{ enrollment.grade }}%</strong>
+              Grade: <strong class='text-success'>{{ enrollment.grade|floatformat:2 }}
+                %</strong>
             </p>
             {% elif enrollment.grade >= 50 %}
             <p class="card-text mb-1 ms-3">
-              Grade: <strong class='text-warning'>{{ enrollment.grade }}%</strong>
+              Grade: <strong class='text-warning'>{{ enrollment.grade|floatformat:2 }}
+                %</strong>
             </p>
             {% else %}
             <p class="card-text mb-1 ms-3">
