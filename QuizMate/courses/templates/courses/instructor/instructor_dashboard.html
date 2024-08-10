@@ -103,10 +103,10 @@
               ],
               datasets: [
                   {
-                      label: 'Average Grade (%)',
+                      label: 'Progress of completion (%)',
                       data: [
                           {% for student in students %}
-                              {{ student.avg_grade }},
+                              {{ student.avg_progress }},
                           {% endfor %}
                       ],
                       borderColor: 'rgba(75, 192, 192, 1)',

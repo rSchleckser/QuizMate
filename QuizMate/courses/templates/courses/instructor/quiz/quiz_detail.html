@@ -14,7 +14,7 @@
   <a href="{% url 'quiz_delete' quiz.course.pk quiz.pk %}" class="btn btn-danger">Remove Quiz</a>
 
   <h2>Questions</h2>
-  <ul>
+  <ol>
     {% for question in questions %}
     <li>
       {{ question.question }}
@@ -30,7 +30,7 @@
     {% empty %}
     <li>No questions available.</li>
     {% endfor %}
-  </ul>
+  </ol>
   <h2>{{question.quiz.pk}}</h2>
 
   <a href="{% url 'question_create' quiz.pk %}" class="btn btn-success">Add Question</a>
