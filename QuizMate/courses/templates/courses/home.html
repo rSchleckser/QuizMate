@@ -3,12 +3,14 @@
 {% block title %}Home - QuizMate{% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center">
-  <h1>Welcome to QuizMate</h1>
-  <p>Your ultimate platform for quizzes and learning!</p>
-  <p>
-    <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Sign Up</a>
-    <a class="btn btn-secondary btn-lg" href="{% url 'login' %}" role="button">Login</a>
-  </p>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="jumbotron text-center bg-light p-5 rounded">
+    <h1 class="display-4">Welcome to QuizMate</h1>
+    <p class="lead">Your ultimate platform for quizzes and learning!</p>
+    <p>
+      <a class="btn btn-primary btn-lg mx-2" href="{% url 'signup' %}" role="button">Sign Up</a>
+      <a class="btn btn-secondary btn-lg mx-2" href="{% url 'login' %}" role="button">Login</a>
+    </p>
+  </div>
 </div>
 {% endblock %}

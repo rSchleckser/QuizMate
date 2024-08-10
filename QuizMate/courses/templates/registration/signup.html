@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4">Sign Up</h2>
-    <form method="post" class="w-50 mx-auto">
+    <form method="post" class="w-50 mx-auto p-4 bg-light rounded shadow">
         {% csrf_token %}
         <div class="form-group">
             <label for="{{ form.username.id_for_label }}">Username</label>
