@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'QuizMate.urls'
+ROOT_URLCONF = 'courses.urls'
 
 TEMPLATES = [
     {
