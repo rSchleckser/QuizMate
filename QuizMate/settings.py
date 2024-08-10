@@ -84,12 +84,10 @@ WSGI_APPLICATION = 'QuizMate.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=f'postgresql://{os.getenv("DATABASE_URL")}',
+        default=DATABASE_URL,
         conn_max_age=600,
-        engine='django.db.backends.postgresql'
     )
 }
-
 
 
 # Password validation
