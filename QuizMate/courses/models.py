@@ -32,6 +32,8 @@ class Question(models.Model):
 
     def is_correct(self, selected_option):
         return str(self.correct_option) == str(selected_option)
+    def get_correct_answer(self):
+        return getattr(self, f'option{self.correct_option}')
 
 
 class Submission(models.Model):

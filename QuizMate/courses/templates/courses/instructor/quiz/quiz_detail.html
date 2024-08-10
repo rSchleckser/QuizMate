@@ -20,8 +20,9 @@
       {{ question.question }}
 
       <h4>Correct Answer:
-        {{ question.correct_option }}
-      </h4>
+        {{ question.get_correct_answer }}
+    </h4>
+    
       <a href="{% url 'question_edit' question.quiz.pk question.pk %}" class="btn btn-warning">Edit Question</a>
       <a href="{% url 'question_delete' question.quiz.pk question.pk %}" class="btn btn-danger">Remove Question</a>
 
