@@ -1,20 +1,19 @@
 databases:
-  - name: course-db
+  - name: courses-db
     plan: free
-    databaseName: course_db
-    user: course_user
-
+    databaseName: courses_db
+    user: courses_user
 services:
   - type: web
     plan: free
-    name: course-service
+    name: courses-service
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn course.asgi:application -k uvicorn.workers.UvicornWorker"
+    startCommand: "python -m gunicorn courses.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: course-db
+          name: courses-db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
