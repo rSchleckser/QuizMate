@@ -43,8 +43,15 @@ def logout_view(request):
 def student_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_student:
         return redirect('login')
-    courses = Course.objects.all()
-    return render(request, 'courses/student/student_dashboard.html', {'courses': courses})
+
+    available_courses = Course.objects.exclude(enrollments__student=request.user)
+    enrolled_courses = Enrollment.objects.filter(student=request.user)
+
+    return render(request, 'courses/student/student_dashboard.html', {
+        'available_courses': available_courses,
+        'enrolled_courses': enrolled_courses,
+    })
+
 
 def instructor_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_instructor:
