@@ -330,17 +330,6 @@ def take_quiz(request, course_id, quiz_id):
 
 
 def quiz_result(request, course_id, quiz_id):
-    course = Course.objects.get(id=course_id)
-    quiz = Quiz.objects.get(id=quiz_id)
-    
-    return render(request, 'courses/student/quiz/quiz_result.html', {
-        'course': course,
-        'quiz': quiz,
-        'score': score,
-        'total_questions': total_questions,
-        'percentage': percentage,
-        'feedback': feedback,
-        'student_answers': student_answers,
-    })
+    return render(request, 'courses/student/quiz/quiz_result.html')
 
 
