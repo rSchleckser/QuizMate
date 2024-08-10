@@ -11,6 +11,7 @@ urlpatterns = [
 # Instructor and Student Dashboard
     path('student/dashboard/', views.student_dashboard, name='student_dashboard'),
     path('instructor/dashboard/', views.instructor_dashboard, name='instructor_dashboard'),
+    path('student/<int:student_id>/', views.student_detail, name='student_detail'),
 
 # Instructor Course CRUD
     path('instructor/course/<int:pk>/', views.course_detail_instructor, name='course_detail_instructor'),
@@ -30,20 +31,19 @@ urlpatterns = [
     path('quiz/<int:quiz_pk>/question/<int:pk>/delete/', views.question_delete, name='question_delete'),
 
 
-    # path('instructor/quiz/<int:pk>/', views.quiz_detail_instructor, name='quiz_detail_instructor'),
-
 # Student Quiz
    path('student/course/<int:course_id>/quiz/<int:quiz_id>/', views.take_quiz, name='take_quiz'),
     path('course/<int:course_id>/quiz/<int:quiz_id>/result/', views.quiz_result, name='quiz_result'),
 
-
 # Courses
+# View Student's Specific course
+    path('student/course/<int:pk>/', views.course_detail_student, name='course_detail_student'),
+
 # Student Course Enrollment
     path('enroll/<int:pk>/', views.course_enrollment, name='course_enrollment'),
     path('unenroll/<int:pk>/', views.course_unenroll, name='course_unenroll'),
 
     path('courses/', views.course_list, name='course_list'),
-    path('student/course/<int:pk>/', views.course_detail_student, name='course_detail_student'),
     path('courses/enrolled/', views.enrolled_courses, name='enrolled_courses'),
 
 ]

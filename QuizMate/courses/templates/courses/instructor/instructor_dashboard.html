@@ -64,24 +64,25 @@
   </div>
 
 
-  <!-- Student List -->
-  <h2 class="mt-4">Student List</h2>
-  <div class="list-group">
-    {% for student in students %}
-    <a href="#" class="list-group-item list-group-item-action">
-      <h5 class="mb-1">
-        {{ student.username }}
-      </h5>
-      <!-- <p class="mb-1">
-        {{ student.email }}
-      </p> -->
-      <small>Enrolled Courses:
-        {{ student.enrollments.count }}</small>
-    </a>
-    {% empty %}
-    <p>No students available.</p>
-    {% endfor %}
-  </div>
+<!-- Student List -->
+<h2 class="mt-4">Student List</h2>
+<div class="list-group">
+  {% for student in students %}
+  <a href="{% url 'student_detail' student.id %}" class="list-group-item list-group-item-action">
+    <h5 class="mb-1">
+      {{ student.username }}
+    </h5>
+    <small>Enrolled Courses:
+      {% for enrollment in student.enrollments.all %}
+        {{ enrollment.course.name }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </small>
+  </a>
+  {% empty %}
+  <p>No students available.</p>
+  {% endfor %}
+</div>
+
 
   <!-- Statistics -->
   <h2 class="mt-4">Course Performance</h2>

@@ -37,13 +37,13 @@
       {% for enrollment in course.enrollments.all %}
       <tr>
         <td>
-          {{ enrollment.student.username }}
+          <strong class='text-info'>{{ enrollment.student.username }}</strong>
         </td>
         <td>
-          {{ enrollment.grade }}%
+          <strong>{{ enrollment.grade }}%</strong>
         </td>
         <td>
-          {{ enrollment.progress }}%
+          <strong>{{ enrollment.progress }}%</strong>
         </td>
       </tr>
       {% endfor %}

@@ -52,12 +52,30 @@ def student_dashboard(request):
         'enrolled_courses': enrolled_courses,
     })
 
+def student_detail(request, student_id):
+    
+    student = CustomUser.objects.get(id=student_id)
+    enrollments = Enrollment.objects.filter(student=student)
+
+    avg_grade = enrollments.aggregate(avg_grade=Avg('grade'))['avg_grade']
+    avg_progress = enrollments.aggregate(avg_progress=Avg('progress'))['avg_progress']
+   
+    print(enrollments.aggregate(avg_progress=Avg('progress')))
+
+    return render(request, 'courses/instructor/student_detail.html', {
+            'student': student,
+            'enrollments': enrollments,
+            'avg_grade': avg_grade,
+            'avg_progress': avg_progress,
+        })
+
 
 def instructor_dashboard(request):
     if not request.user.is_authenticated or not request.user.is_instructor:
         return redirect('login')
     courses = Course.objects.filter(instructor=request.user)
-    total_students = CustomUser.objects.filter(enrollments__course__in=courses).distinct().count()
+    total_students = CustomUser.objects.filter(enrollments__course__in=courses).count()
+   
     
     context = {
         'courses': courses,
@@ -217,26 +235,13 @@ def course_detail_student(request, pk):
     quizzes = Quiz.objects.filter(course=course)
     submissions = Submission.objects.filter(student=request.user)
 
-    quiz_submissions = (
-        Submission.objects.filter(student=request.user, quiz__in=quizzes)
-        .values('quiz')
-        .annotate(number_of_sub=Count('id'))
-        )
-    submissions_count_dict = {item['quiz']: item['number_of_sub'] for item in quiz_submissions}
-    print(submissions_count_dict)
-
     latest_submissions = (
         Submission.objects.filter(student=request.user, quiz__in=quizzes)
         .values('quiz')
         .annotate(latest_submission_id=Max('id'))
     )
-    
     user_submissions = Submission.objects.filter(id__in=[sub['latest_submission_id'] for sub in latest_submissions])
-    print(user_submissions)
-
-    user_quiz_submissions = Submission.objects.filter(id__in=[sub['number_of_sub'] for sub in quiz_submissions])
-    print(user_quiz_submissions)
-
+    
     quizzes_taken = user_submissions.count()
     number_of_submissions = submissions.count()
     quizzes_completed = quizzes.count()
@@ -245,8 +250,6 @@ def course_detail_student(request, pk):
         sum(sub.percentage() for sub in user_submissions) / len(user_submissions)
         if user_submissions else 0
     )
-    
-    
     
     quizzes_completed_percentage = (quizzes_taken / quizzes_completed * 100) if quizzes_completed > 0 else 0
     quizzes_completed_percentage = "{:.2f}".format(quizzes_completed_percentage)
@@ -263,12 +266,10 @@ def course_detail_student(request, pk):
         'course': course,
         'quizzes': quizzes,
         'user_submissions': user_submissions,
-        'quiz_submissions': submissions_count_dict,
         'number_of_quizzes_taken': quizzes_taken,
         'number_of_submissions': number_of_submissions,
         'average_percentage': round(average_percentage, 2),
         'quizzes_completed_percentage': quizzes_completed_percentage
-        
     })
     
 
@@ -333,9 +334,6 @@ def quiz_result(request, course_id, quiz_id):
         'feedback': feedback,
         'student_answers': student_answers,
     })
-
-
-
 
 
 def enrolled_courses(request):
