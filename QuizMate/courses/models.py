@@ -1,9 +1,16 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import Avg
 
 class CustomUser(AbstractUser):
     is_student = models.BooleanField(default=False)
     is_instructor = models.BooleanField(default=False)
+
+    def avg_grade(self):
+        return self.enrollments.aggregate(Avg('grade'))['grade__avg'] or 0.0
+
+    def avg_progress(self):
+        return self.enrollments.aggregate(Avg('progress'))['progress__avg'] or 0.0
 
 class Course(models.Model):
     name = models.CharField(max_length=100)

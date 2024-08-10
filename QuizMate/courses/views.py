@@ -134,9 +134,7 @@ def course_delete(request, pk):
     Course.objects.get(id=pk).delete()
     return redirect('instructor_dashboard')
 
-def course_list(request):
-    courses = Course.objects.all()
-    return render(request, 'courses/course_list.html', {'courses': courses})
+
 
 # =========== COURSE ENROLLMENT ===========
 def course_enrollment(request, pk):
@@ -354,7 +352,3 @@ def quiz_result(request, course_id, quiz_id):
     })
 
 
-def enrolled_courses(request):
-    enrollments = Enrollment.objects.filter(student=request.user)
-    courses = [enrollment.course for enrollment in enrollments]
-    return render(request, 'courses/student/enrolled_courses.html', {'courses': courses})

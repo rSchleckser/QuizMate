@@ -74,7 +74,7 @@
     </h5>
     <small>Enrolled Courses:
       {% for enrollment in student.enrollments.all %}
-        {{ enrollment.course.name }}{% if not forloop.last %}, {% endif %}
+        {{ enrollment.course.name }}
       {% endfor %}
     </small>
   </a>
@@ -87,5 +87,56 @@
   <!-- Statistics -->
   <h2 class="mt-4">Course Performance</h2>
   <p>View detailed analytics on student performance and course effectiveness.</p>
+  
+  <canvas id="studentProgressChart" width="400" height="200"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+      var ctx = document.getElementById('studentProgressChart').getContext('2d');
+      var studentProgressChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: [
+                  {% for student in students %}
+                      '{{ student.username }}',
+                  {% endfor %}
+              ],
+              datasets: [
+                  {
+                      label: 'Average Grade (%)',
+                      data: [
+                          {% for student in students %}
+                              {{ student.avg_grade }},
+                          {% endfor %}
+                      ],
+                      borderColor: 'rgba(75, 192, 192, 1)',
+                      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                      fill: true,
+                  },
+              ]
+          },
+          options: {
+              responsive: true,
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      max: 100,
+                      title: {
+                          display: true,
+                          text: 'Percentage (%)'
+                      }
+                  },
+                  x: {
+                      title: {
+                          display: true,
+                          text: 'Students'
+                      }
+                  }
+              }
+          }
+      });
+  });
+  </script>
+
 </div>
 {% endblock %}
