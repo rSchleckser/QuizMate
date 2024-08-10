@@ -32,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['','']
+ALLOWED_HOSTS = ['quiz-mate.onrender.com','https://quiz-mate.onrender.com']
 
 
 # Application definition
