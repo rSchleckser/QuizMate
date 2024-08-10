@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, CourseForm, QuizForm, QuestionForm
@@ -247,8 +247,17 @@ def course_detail_student(request, pk):
     )
     
     
+    
     quizzes_completed_percentage = (quizzes_taken / quizzes_completed * 100) if quizzes_completed > 0 else 0
     quizzes_completed_percentage = "{:.2f}".format(quizzes_completed_percentage)
+
+    try:
+        enrollment = Enrollment.objects.get(student=request.user, course=course)
+        enrollment.progress = quizzes_completed_percentage
+        enrollment.save()
+    except Enrollment.DoesNotExist:
+        pass
+    
     return render(request, 'courses/student/course_detail_student.html', {
         'course': course,
         'quizzes': quizzes,
@@ -265,8 +274,8 @@ def course_detail_student(request, pk):
 
 
 def take_quiz(request, course_id, quiz_id):
-    course = get_object_or_404(Course, id=course_id)
-    quiz = get_object_or_404(Quiz, id=quiz_id)
+    course = Course.objects.get(id=course_id)
+    quiz = Quiz.objects.get(id=quiz_id)
     questions = quiz.questions.all()
 
     if request.method == 'POST':
@@ -304,8 +313,8 @@ def take_quiz(request, course_id, quiz_id):
 
 
 def quiz_result(request, course_id, quiz_id):
-    course = get_object_or_404(Course, id=course_id)
-    quiz = get_object_or_404(Quiz, id=quiz_id)
+    course = Course.objects.get(id=course_id)
+    quiz = Quiz.objects.get(id=quiz_id)
     
     quiz_results = request.session.get('quiz_results', {})
     score = quiz_results.get('score', 0)
