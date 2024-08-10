@@ -133,7 +133,8 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'QuizMate.CustomUser'
+AUTH_USER_MODEL = 'courses.CustomUser'
+
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
