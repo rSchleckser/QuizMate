@@ -313,7 +313,6 @@ def take_quiz(request, course_id, quiz_id):
 
         percentage = (score / total_questions) * 100
         feedback = f'You scored {score} out of {total_questions} ({percentage:.2f}%).'
-
         Submission.objects.create(student=request.user, quiz=quiz, score=score, total_questions=total_questions)
 
         return render(request, 'courses/student/quiz/quiz_result.html', {
@@ -334,13 +333,6 @@ def quiz_result(request, course_id, quiz_id):
     course = Course.objects.get(id=course_id)
     quiz = Quiz.objects.get(id=quiz_id)
     
-    quiz_results = request.session.get('quiz_results', {})
-    score = quiz_results.get('score', 0)
-    total_questions = quiz_results.get('total_questions', 0)
-    percentage = quiz_results.get('percentage', 0)
-    feedback = quiz_results.get('feedback', '')
-    student_answers = quiz_results.get('student_answers', [])
-
     return render(request, 'courses/student/quiz/quiz_result.html', {
         'course': course,
         'quiz': quiz,
