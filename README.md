@@ -38,7 +38,7 @@ QuizMate is designed to simplify the process of course and quiz management for i
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/quizmate.git
+    git clone https://github.com/rSchleckser/quizmate.git
     cd quizmate
     ```
 
