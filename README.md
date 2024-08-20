@@ -38,7 +38,7 @@ QuizMate is designed to simplify the process of course and quiz management for i
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/quizmate.git
+    git clone https://github.com/rSchleckser/quizmate.git
     cd quizmate
     ```
 
@@ -83,7 +83,7 @@ QuizMate is designed to simplify the process of course and quiz management for i
 
 ## Entity Relationship Diagram (ERD)
 
-![ERD](/QuizMate/course_images/ERD.png)
+![ERD](/course_images/ERD.png)
 
 ### ERD Description
 
@@ -115,11 +115,11 @@ QuizMate is designed to simplify the process of course and quiz management for i
 
 ### Instructor Dashboard Wireframe
 
-![Instructor Dashboard Wireframe](/QuizMate/course_images/instructor_wireframe.png)
+![Instructor Dashboard Wireframe](/course_images/instructor_wireframe.png)
 
 ### Student Dashboard Wireframe
 
-![Student Dashboard Wireframe](/QuizMate/course_images/student_wireframe.png)
+![Student Dashboard Wireframe](/course_images/student_wireframe.png)
 
 ## Trello Board
 
