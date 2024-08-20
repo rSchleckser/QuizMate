@@ -10,7 +10,7 @@ services:
     name: courses-service
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn courses.asgi:application -k uvicorn.workers.UvicornWorker"
+    startCommand: "python -m gunicorn QuizMate.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -20,3 +20,4 @@ services:
         generateValue: true
       - key: WEB_CONCURRENCY
         value: 4
+
