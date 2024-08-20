@@ -1,6 +1,6 @@
 # QuizMate - Instructor and Student Dashboard
 
-Welcome to QuizMate, a comprehensive platform for managing courses, quizzes, and students. This project provides an intuitive dashboard for instructors to create and manage courses and quizzes, view student performance, and much more.
+Welcome to QuizMate! You can explore the live application at [https://courses-service-1f17.onrender.com](https://courses-service-1f17.onrender.com). This comprehensive platform is designed for managing courses, quizzes, and students, providing an intuitive dashboard for instructors and a seamless experience for students.
 
 ## Table of Contents
 1. [Project Description](#project-description)
