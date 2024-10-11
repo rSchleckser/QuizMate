@@ -1,49 +1,40 @@
 html, body {
-  height: 100%;
-  margin: 0;
-  background: linear-gradient(to top, #dfe9f3 0%, white 100%);
-  box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+ height: 100%;
+ margin: 0;
+ background: linear-gradient(to top, #dfe9f3 0%, white 100%);
+  }
 
 .wrapper {
-  background: linear-gradient(to top, #dfe9f3 0%, white 100%);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+ background: linear-gradient(to top, #dfe9f3 0%, white 100%);
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
+  }
 
-form {
-  max-width: 500px; 
-  width: 100%;
-  padding: 10px; /* Ensure there's some padding */
-  margin: 0 auto; /* Center form horizontally */
-}
+  form {
+    max-width: 500px; 
+    width: 100%;
+  }
 
 .content {
-  flex: 1;
-}
+ flex: 1;
+  }
 
 footer {
-  background-color: #f8f9fa;
-  padding: 1rem 0;
-  text-align: center;
-  margin-top: 1rem;
-}
+ background-color: #f8f9fa;
+ padding: 1rem 0;
+ text-align: center;
+ margin-top: 1rem;
+  }
 
 div.row div.col-md-4 div.card.mb-4.shadow-sm img.card-img-top {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+ width: 100%;
+ height: 180px;
+ object-fit: cover;
 }
 
 @media (max-width: 768px) {
   form {
-    max-width: 80%;  /* Ensure form doesn't exceed 80% width on mobile */
-    margin: 0 auto;  /* Center form on mobile */
-    padding: 15px;   /* Add more padding on mobile for better spacing */
+    max-width: 80%; 
   }
 }

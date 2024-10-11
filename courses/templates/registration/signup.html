@@ -2,26 +2,26 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Sign Up</h2>
-    <form method="post" class="w-50 mx-auto p-4 bg-light rounded shadow">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="{{ form.username.id_for_label }}">Username</label>
-            {{ form.username }}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.password1.id_for_label }}">Password</label>
-            {{ form.password1 }}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
-            {{ form.password2 }}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.user_type.id_for_label }}">Are you a student or an instructor?</label>
-            {{ form.user_type }}
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
-    </form>
+  <h2 class="text-center mb-4">Sign Up</h2>
+  <form method="post" class="mx-auto p-4 bg-light rounded shadow">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.password1.id_for_label }}">Password</label>
+      {{ form.password1 }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+      {{ form.password2 }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.user_type.id_for_label }}">Are you a student or an instructor?</label>
+      {{ form.user_type }}
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+  </form>
 </div>
 {% endblock %}
