@@ -35,7 +35,6 @@ urlpatterns = [
 
 # Student Quiz
    path('student/course/<int:course_id>/quiz/<int:quiz_id>/', views.take_quiz, name='take_quiz'),
-    path('course/<int:course_id>/quiz/<int:quiz_id>/result/', views.quiz_result, name='quiz_result'),
 
 # Courses
 # View Student's Specific course
