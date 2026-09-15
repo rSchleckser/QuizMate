@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +30,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['courses-service-1f17.onrender.com','https://courses-service-1f17.onrender.com']
+ALLOWED_HOSTS = ['courses-service-1f17.onrender.com']
+
+if DEBUG:
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -79,7 +82,6 @@ WSGI_APPLICATION = 'QuizMate.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-print("DATABASE_URL:", os.getenv('DATABASE_URL'))
 
 DATABASES = {
     'default': dj_database_url.config(

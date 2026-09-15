@@ -30,16 +30,26 @@ class Quiz(models.Model):
     description = models.TextField()
 
 class Question(models.Model):
+    class CorrectOption(models.IntegerChoices):
+        OPTION_1 = 1, 'Option 1'
+        OPTION_2 = 2, 'Option 2'
+        OPTION_3 = 3, 'Option 3'
+        OPTION_4 = 4, 'Option 4'
+
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
     question = models.CharField(max_length=255)
     option1 = models.CharField(max_length=100)
     option2 = models.CharField(max_length=100)
     option3 = models.CharField(max_length=100)
     option4 = models.CharField(max_length=100)
-    correct_option = models.CharField(max_length=100, default='Answer')
+    correct_option = models.PositiveSmallIntegerField(choices=CorrectOption.choices, default=CorrectOption.OPTION_1)
 
     def is_correct(self, selected_option):
-        return str(self.correct_option) == str(selected_option)
+        try:
+            return self.correct_option == int(selected_option)
+        except (TypeError, ValueError):
+            return False
+
     def get_correct_answer(self):
         return getattr(self, f'option{self.correct_option}')
 
