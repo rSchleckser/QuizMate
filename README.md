@@ -7,9 +7,10 @@ Welcome to QuizMate! You can explore the live application at [https://courses-se
 2. [Technologies Used](#technologies-used)
 3. [Installation](#installation)
 4. [Usage](#usage)
-5. [Entity Relationship Diagram (ERD)](#entity-relationship-diagram-erd)
-6. [Wireframes](#wireframes)
-7. [Trello Board](#trello-board)
+5. [Deployment](#deployment)
+6. [Entity Relationship Diagram (ERD)](#entity-relationship-diagram-erd)
+7. [Wireframes](#wireframes)
+8. [Trello Board](#trello-board)
 
 ## Project Description
 
@@ -80,6 +81,32 @@ QuizMate is designed to simplify the process of course and quiz management for i
 - Visit `http://127.0.0.1:8000` in your browser.
 - Log in with your superuser credentials or create a new instructor/student account.
 - Navigate to the instructor or student dashboard to start managing or enrolling in courses and quizzes.
+
+## Deployment
+
+QuizMate is deployed on [Railway](https://railway.app) (app + Postgres in
+one project, no cold-start sleep). A `railway.json` at the repo root tells
+Railway to build with Nixpacks and run migrations, `collectstatic`, and
+gunicorn on deploy.
+
+To stand up your own instance:
+
+1. Create a new Railway project and **Deploy from GitHub repo**, pointing at
+   this repository.
+2. Add a **Postgres** service to the project — Railway injects `DATABASE_URL`
+   into the web service automatically.
+3. Set these environment variables on the web service:
+   - `SECRET_KEY` — generate with `python -c "import secrets; print(secrets.token_urlsafe(50))"`
+   - `DEBUG` — `False`
+   - `ALLOWED_HOSTS` — comma-separated hostname(s) the app will be served
+     from (e.g. your generated `*.up.railway.app` domain). Defaults to the
+     legacy Render hostname if unset.
+4. Deploy, then go to **Settings → Networking → Generate Domain** to get a
+   public URL, and add that domain to `ALLOWED_HOSTS`.
+
+The project previously ran on [Render](https://render.com) via
+`render.yaml`/`build.sh`; those files are kept for reference but are unused
+by the Railway deployment.
 
 ## Entity Relationship Diagram (ERD)
 

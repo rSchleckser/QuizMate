@@ -30,7 +30,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-ALLOWED_HOSTS = ['courses-service-1f17.onrender.com']
+ALLOWED_HOSTS = [
+    h.strip() for h in os.getenv(
+        'ALLOWED_HOSTS', 'courses-service-1f17.onrender.com'
+    ).split(',') if h.strip()
+]
 
 if DEBUG:
     ALLOWED_HOSTS += ['localhost', '127.0.0.1']
